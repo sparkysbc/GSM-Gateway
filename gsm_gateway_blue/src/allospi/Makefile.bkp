@@ -1,0 +1,10 @@
+obj-m := allospi.o
+
+#KDIR ?= /usr/src/H8/a80_hummingbird/lichee/linux-3.4/
+KDIR ?= /usr/src/bpi_build/sunxi-bsp/build/sun7i_defconfig-linux
+
+default:
+	$(MAKE) -C $(KDIR) M=$$PWD modules ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
+
+clean:
+	$(MAKE) -C $(KDIR) M=$$PWD clean

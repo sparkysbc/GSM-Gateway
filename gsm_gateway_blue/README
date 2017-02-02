@@ -1,0 +1,87 @@
+########################################################################
+#                            ALLO GSM README                           #
+#                                vXXXXX                                #
+########################################################################
+
+------------------------------------------------------------------------
+
+It is imperative that you read and fully understand the contents of
+the document before you attempt to configure and run chan_allogsm.
+Derived from chan_extra v2.0.7.
+
+------------------------------------------------------------------------
+
+
+--- NEW INSTALLATIONS --------------------------------------------------
+Please view the ChangeLog, the file describes chan_allogsm support the version 
+of asterisk and dahdi.
+
+#### Downloading and installing the chan_allogsm
+
+1.Go to ALLO GSM official website to download the drivers
+
+	http://www.allo.com/
+
+2.Unpacking the package, run the command :
+
+	tar -zxvf chan_allogsm-XXXXX.tar.gz
+
+3.Enter the path ,then execute the install.sh and install the drive, run the command:
+
+	./install.sh
+
+4.The script will check whether the supporting package were installed automatically,
+	you should type 'Y' accept to install the packages until the all packages are checked.
+
+5.Please choose the system of you are using:
+
+	1) Source code install
+	2) Trixbox-dahdi install
+	3) Elastix-dahdi install
+
+6.chan_allogsm will be automatically installed in your system when you chose the system type. 
+
+
+#### Configuring chan_allogsm and run asterisk
+
+1.Refresh the hardware list
+
+	depmod -a
+
+2.Generate configuration for dahdi channels
+
+	dahdi_genconf
+
+3.start the dahdi service
+
+	service dahdi start
+	or
+	/etc/init.d/dahdi start
+
+4.configures DAHDI kernel modules from /etc/dahdi/system.conf
+	
+	dahdi_cfg -vv
+
+5.check the loading status
+
+	dmesg
+
+	IRQ 21/allog4c: IRQF_DISABLED is not guaranteed on shared IRQs
+	Card 0 AlloG4C: Slot 0 is Installed
+	Card 0 AlloG4C: Slot 1 is Installed
+	Card 0 AlloG4C: Slot 2 is Installed
+	Card 0 AlloG4C: Slot 3 is Installed
+
+6.start asterisk
+
+	asterisk -vvv
+
+7.Make sure the gsm is up and connected with network
+
+*CLI: allogsm show spans
+ALLOGSM span 1: Power on, Provisioned, Up, Active, Standard
+ALLOGSM span 2: Power on, Provisioned, Up, Active, Standard
+ALLOGSM span 3: Power on, Provisioned, Up, Active, Standard
+ALLOGSM span 4: Power on, Provisioned, Up, Active, Standard
+
+-----------------------------------------------------------------------

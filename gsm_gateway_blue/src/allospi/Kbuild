@@ -1,0 +1,2 @@
+obj-$(DAHDI_BUILD_ALL)$(CONFIG_DAHDI_OPVXA24XX) += allospi.o
+

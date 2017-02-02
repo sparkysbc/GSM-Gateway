@@ -1,0 +1,1 @@
+  --with-allogsmat=PATH      use ALLOGSMAT files in PATH

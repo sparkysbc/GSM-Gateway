@@ -1,0 +1,34 @@
+--------------------------------------------------------------------------------------
+------ Known LIMITATIONS  ------------------------------------------------------------
+--------------------------------------------------------------------------------------
+
+--> Module REBOOTING bug: While writing AT commands to GSM module, If we write
+too fast gms module tends to reboot. So we write AT with some delay. But this
+Delay is also not sufficient on some PC's. Its like we are doing a custom 
+setting sometimes.
+	If sometime calls are droping frequently, just ebable debug and see
+wether module is rebooting. We can identify a reboot if we see these command 
+sequence:
+	+WIND: 3
+	+WIND: 1
+	+CREG: 2
+ 
+--> INBAND DTMF: DTMF coming from GSM Module is inband. GSM module dont have 
+option to mute inband dtmf. Also we are not able to mute dtmf from Asterisk DSP 
+coz we are using dtmf detection from module not ast_dsp.
+
+--> RANDOM DTMF: Sometimes without a key press on GSM's remote end we receive 
+DTMF. Its a bug in Wavecom AirPrime gsm modem.
+	If debug enabled we can see dtmf detection as at response:  
+		+WDDI: <DTMF>.
+	For time being we are ignoring dtmf detected with duration less than
+80 miliseconds.
+
+--> Basic Character Set Extension not supported in sms(PDU mode). 
+
+--------------------------------------------------------------------------------------
+------ Features not Supported yet  ---------------------------------------------------
+--------------------------------------------------------------------------------------
+
+--> Call Waiting.
+

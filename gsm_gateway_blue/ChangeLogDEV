@@ -1,0 +1,169 @@
+2015-09-03 pawan
+	* Added SMS send or failed status update in log file. Here id with
+	message is mandatory to enable logging. Messages are stored in
+	/var/log/asterisk/sms/ dir, where messages which are successful are
+	stored in "smsout_success" and failed are stored in "smsout_fail".
+
+2015-06-25 pawan
+	* Asterisk crash fixed.
+
+2015-06-25 pawan
+	* In asterisk 12 and 13 during channel allocation ast_channel_alloc
+	asterisk channel is locked. So it must be freed before allochan_new is 
+	freed.
+
+2015-06-24 pawan
+	* Added support for asterisk 13.4.0, 12.8.2 and 11.6.0.
+	* Added support for dahdi 2.10.02 
+	* Fixed bug (0004240). Memory was alocated for 32 or 24 channels where
+	only supporting 2 channels in fn allo2aCG/base.c:g4_alloc_channels.
+
+2015-06-15 pawan
+	* Updating Signal strength down status for the signal strength going
+	down after CALL_ACTIVE to READY.
+
+2015-06-12 pawan
+	* Hangup bug. If two call is hangedup from both ends i.e from SIP and
+	GSM, then channel is not hangedup properly.
+
+	1 -->   ATH                || HANGUP REQ ||
+	1 <-- 0 NO CARRIER         || HANGUP REQ || last sent ATH
+	1 <-- 0 OK                 || READY      || last sent ATH
+
+	Now for every hangup initiated with ATH, NO CARRIER and +WIND: 6,1 are
+	ignored and waiting for only OK to complete ATH transaction.
+
+2015-06-11 pawan
+	* When sms is sent and CMS error 512 is received, modem is reloaded
+	due to MM establishment failure.
+	* Avoiding multiple reload module schedular loop by limiting
+	scheduling loop for only first time.
+
+2015-06-10 pawan
+	* Signal strength state transition modified. Now spans are set down
+	as well as STATE is also not READY if signal is down. Also for this 
+	state, auto reload will only fire AT+CSQ for next 3 tries after that
+	normal restart will be tried.
+
+2015-06-09 pawan
+	* Fixed module reload bug. Infinite schedular to monitor module was 
+	not working.
+	* Added AT+SPEAKER=9 in default initialization sequence.
+
+2015-06-04 pawan
+	* SMS Retry for 3 times feature added.
+	* Added schedular to monitor sms sending is not happening for too long
+
+2015-06-02 pawan
+	* Disabled retrying for a case were SIM PIN entered is wrong.
+	* If incoming calls and msg are tried together, Sometimes module 
+	becomes unresponsive and for any AT Command fired it replies with 515. 
+	We have to restart in between.
+	* Retries are made unlimited.
+
+2015-05-29 pawan
+	* Modified Logs for AT commands. Added logging for sms sending.
+	* Fixed command "allogsm reload span".
+
+2015-05-12 pawan
+	* Modified Dahdi version numbering in install.sh . Earlier 2.5 was
+	2500 but now its 2050000 to support latest version numbers like
+	2.10.0.1
+	* Modified old version number dependencies in allog4c.
+	* Added code to update at command status register after writing at
+	commands.
+	* Commented warning throwing code in allo2aCG.
+
+2015-05-11 pawan
+	* Added logic to wait a call initiate when sms sending is in progress.
+	Took care of hangup when call is not initiated.
+	* Added Gen 2 card driver.
+	* Dahdi patches are modified to support 2aCG driver.
+	* Modified install.sh to detect card type and install respective
+	driver.
+
+2015-03-03 pawan
+	* Changed install.sh to support ast ver 1.8.7.1
+
+2014-12-02 pawan
+	* Waiting for WIND 4 for AT+CMMS.
+	* Reset happening in loop is fixed. Flush variable wind_state before
+	every reset.
+	* Asterisk 1.4 support added.
+
+2014-11-04 pawan
+	* chan_allogsm-1.1.4.T1 Test Release
+        * Added support for 1 port and 2 port cards in base.c
+
+2014-11-04 pawan
+	* chan_allogsm-1.1.3.T1 Test Release
+        * Performance inprovements in INIT sequence derived from GSM Gateway
+
+2014-09-25 pawan
+	* chan_allogsm-1.1.2_P3
+	* Hangup Causes are made proper but still not ok as BUSY event doent come for busy in some cases.
+	  Also for incoming call only WIND: 6,1 is received. 
+	* RINGING event added. ref AST_STATE_RINGING.
+
+2014-07-18 pawan
+	* chan_allogsm-1.1.2_P2 Patch release.
+	* Modified delay parameter while reading and writing audio based on
+	number of cards.
+
+2014-06-16 pawan
+	* chan_allogsm-1.1.2_T5 Test release.
+	* Added Support for Asterisk 10
+	* Added feature to patch chan_allogsm for elastix related changes.
+	Enabled using #define ELASTRIX 1.
+
+2014-06-13 pawan
+	* chan_allogsm-1.1.2_T4 Test release.
+	* San buffer if it is not emply from prior event, we will write it to
+	last receive in next polling cycle. code can be followed from SAN_BUFF_NOT_EMPTY.
+	* Above bug is reproducable if we send a msg and receive it on same
+	span.
+	* SMS UDH header triming added. follow UDH_SMS_RECV.
+
+2014-05-27 pawan
+	* chan_allogsm-1.1.2.P1 Patch release.
+	* Patch for "configure" file in asterisk added. Old patch configure.3.sed 
+	not working for asterisk 1.6.2 so alternate patch is added as configure.3.AST_1_6_2.sed
+
+2014-04-24 pawan
+	* chan_allogsm-1.1.2 T2 test release.
+	* Patching Dahdi perl script is modified to support dahdi 2.9 and
+	below.
+	* Multiple card issue fixed. Intrerrupts were not acknowledged as
+	serve irq was common for driver not for card.
+
+2014-04-22 pawan
+	* chan_allogsm-1.1.2 T1 test release.
+	* Removed delay of 500 microseconds after writing data in g4_dchan_tx.
+	It was problematic with 2 or more cards as more every interrupt was
+	processed in more than 1 milisecond window.
+
+2014-02-06 pawan
+	* chan_allogsm-1.1.1_1 T2 test release.
+	
+	* Change delay in while transmitting AT commands from dahdi driver.
+	For every byte tx 100 microsec delay is there.
+	* If Junk comes when we fire ATH, State machine stucks at
+	ALLOGSM_STATE_HANGUP_REQ. So we consider junk as OK for ATH and
+	resumes the operation of state machine.
+
+2014-02-05 pawan
+	* chan_allogsm-1.1.1_1 T1 test release.
+
+	* DTMF Sending by using AT Command.  Earlier we were using DAHDI_TONES.
+	Check USE_AT_DTMF in chan_allogsm.c.
+	* In chan_allogsm while handling ALLOGSM_EVENT_PROCEEDING,
+	AST_CONTROL_PROGRESS is sent instead of AST_CONTROL_PROCEEDING so that call
+	proceeding tones coming from GSM can be fed as early media on other side.
+	* In some systems, While unloading DAHDI, allog4c was crashing. This
+	bug is fixed.
+	* Provision to redirect call to asterisk if we dont receive Caller ID
+	is done. Calls without Caller ID will now be sent as UNKNOWN Call.
+	* Call proceeding, process, ringing, answer sequence as stated is made
+	proper. Earlier this sequence was not proper.
+	* Sms bug fixed. When we receive some sms, portion of previous sms was
+	there in current sms. Provided current msg is smaller.
