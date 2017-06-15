@@ -3,10 +3,11 @@
  *
  * Written by MiaoLin<miaolin@openvox.cn>
  * Written by mark.liu<mark.liu@openvox.cn>
+ * Modified by allocom.
  * $Id: private.c 446 2011-05-12 04:01:57Z liuyuan $
  *
  * Copyright (C) 2005-2010 OpenVox Communication Co. Ltd,
- *
+ * Copyright (C) 2017 allocom.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
